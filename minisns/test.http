@@ -1,0 +1,29 @@
+### 잘 살아있나 확인
+GET localhost:8080/hello
+
+### 사용자 생성
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "seokmin"
+}
+
+### 사용자 목록 보기
+GET localhost:8080/users
+
+### 같은 username으로 중복 테스트
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "seokmin"
+}
+
+### 사용자 추가하기
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "hana"
+}
