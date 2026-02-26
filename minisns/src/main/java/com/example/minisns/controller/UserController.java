@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("/users")
     public UserResponse createUser(@RequestBody CreateUserRequest request) {
         User user = userService.create(request.getUsername());
-        return new UserResponse(user.getId(), user.getUsername());
+        return toUser(user);
     }
 
     /* ####3-2####
@@ -51,7 +51,7 @@ public class UserController {
     public List<UserResponse> getUsers() {
         return userService.findAll()
                 .stream()
-                .map(user -> new UserResponse(user.getId(), user.getUsername()))
+                .map(this::toUser)
                 .toList();
     }
 
@@ -65,4 +65,9 @@ public class UserController {
         return e.getMessage();
     }
 
+    private UserResponse toUser(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUsername());
+    }
 }
