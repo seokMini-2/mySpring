@@ -51,7 +51,7 @@ GET localhost:8080/users
 POST localhost:8080/posts
 Content-Type: application/json
 
-{"userId": 3,
+{"userId": 1,
   "title": "첫 글입니다.",
   "content": "안녕하시라무"
 }
@@ -60,4 +60,16 @@ Content-Type: application/json
 GET localhost:8080/posts
 
 ### 게시글 상세 조회
-GET localhost:8080/posts/999
+GET localhost:8080/posts/3
+
+### 게시글 삭제
+DELETE localhost:8080/posts/1
+
+### 게시글 수정
+PUT localhost:8080/posts/3
+Content-Type: application/json
+
+{
+  "title": "바보입니다",
+  "content": "제 이름은 코난, 명탐정이죠"
+}

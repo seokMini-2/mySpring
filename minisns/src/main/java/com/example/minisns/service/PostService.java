@@ -36,4 +36,18 @@ public class PostService {
     public List<Post> findAll() {
         return postRepository.findAll();
     }
+
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        postRepository.delete(post);
+    }
+
+    @Transactional
+    public Post update(Long id, String title, String content) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
+        post.update(title, content);
+        return post;
+    }
 }

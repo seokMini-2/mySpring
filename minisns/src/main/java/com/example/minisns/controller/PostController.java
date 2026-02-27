@@ -3,6 +3,7 @@ package com.example.minisns.controller;
 import com.example.minisns.domain.Post;
 import com.example.minisns.dto.CreatePostRequest;
 import com.example.minisns.dto.PostResponse;
+import com.example.minisns.dto.UpdatePostRequest;
 import com.example.minisns.service.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public PostResponse create(@RequestBody CreatePostRequest request) {
-        Post post = postService.create(request.getUserId(), request.getTitle(), request.getContent());
+        Post post = postService.create(request.userId(), request.title(), request.content());
         return toResponse(post);
     }
 
@@ -35,6 +36,17 @@ public class PostController {
     public PostResponse getPostById(@PathVariable("id") Long id) {
         Post post = postService.findById(id);
         return toResponse(post);
+    }
+
+    @PutMapping("/posts/{id}")
+    public PostResponse updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
+        Post update = postService.update(id, request.title(), request.content());
+        return toResponse(update);
+    }
+
+    @DeleteMapping("posts/{id}")
+    public void deletePost(@PathVariable("id") Long id) {
+        postService.delete(id);
     }
 
     private PostResponse toResponse(Post post) {
