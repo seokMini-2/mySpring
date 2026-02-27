@@ -58,3 +58,6 @@ Content-Type: application/json
 
 ### 게시글 목록 조회
 GET localhost:8080/posts
+
+### 게시글 상세 조회
+GET localhost:8080/posts/999

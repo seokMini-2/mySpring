@@ -55,16 +55,6 @@ public class UserController {
                 .toList();
     }
 
-    /* ####2#####
-    DuplicateUsernameException클래스에서 발생한 에러를 여기서 잡겠다.
-    응답코드는 BAD_REQUEST
-     */
-    @ExceptionHandler(DuplicateUsernameException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleDuplicate(DuplicateUsernameException e) {
-        return e.getMessage();
-    }
-
     private UserResponse toUser(User user) {
         return new UserResponse(
                 user.getId(),

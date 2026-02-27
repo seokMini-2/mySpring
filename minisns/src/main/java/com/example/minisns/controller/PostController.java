@@ -4,10 +4,7 @@ import com.example.minisns.domain.Post;
 import com.example.minisns.dto.CreatePostRequest;
 import com.example.minisns.dto.PostResponse;
 import com.example.minisns.service.PostService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,12 @@ public class PostController {
                 .stream()
                 .map(this::toResponse)
                 .toList();
+    }
+
+    @GetMapping("/posts/{id}")
+    public PostResponse getPostById(@PathVariable("id") Long id) {
+        Post post = postService.findById(id);
+        return toResponse(post);
     }
 
     private PostResponse toResponse(Post post) {

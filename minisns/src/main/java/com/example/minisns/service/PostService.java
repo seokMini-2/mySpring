@@ -2,9 +2,11 @@ package com.example.minisns.service;
 
 import com.example.minisns.domain.Post;
 import com.example.minisns.domain.User;
+import com.example.minisns.exception.PostNotFoundException;
 import com.example.minisns.repository.PostRepository;
 import com.example.minisns.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,11 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("유저 없음"));
         Post post = new Post(title, content, user);
         return postRepository.save(post);
+    }
+
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id));
     }
 
     public List<Post> findAll() {
