@@ -1,7 +1,9 @@
 package com.example.minisns.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 public class Post {
 
@@ -30,19 +32,4 @@ public class Post {
         this.content = content;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public User getUser() {
-        return user;
-    }
 }

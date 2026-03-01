@@ -1,6 +1,5 @@
 package com.example.minisns.controller;
 
-import com.example.minisns.domain.Post;
 import com.example.minisns.dto.CreatePostRequest;
 import com.example.minisns.dto.PostResponse;
 import com.example.minisns.dto.UpdatePostRequest;
@@ -9,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController()
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -18,44 +18,29 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public PostResponse create(@RequestBody CreatePostRequest request) {
-        Post post = postService.create(request.userId(), request.title(), request.content());
-        return toResponse(post);
+        return postService.create(request.userId(), request.title(), request.content());
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public List<PostResponse> getPosts() {
-        return postService.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
+        return postService.getPosts();
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public PostResponse getPostById(@PathVariable("id") Long id) {
-        Post post = postService.findById(id);
-        return toResponse(post);
+        return postService.getPost(id);
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("/{id}")
     public PostResponse updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
-        Post update = postService.update(id, request.title(), request.content());
-        return toResponse(update);
+        return postService.update(id, request.title(), request.content());
     }
 
-    @DeleteMapping("posts/{id}")
+    @DeleteMapping("/{id}")
     public void deletePost(@PathVariable("id") Long id) {
         postService.delete(id);
-    }
-
-    private PostResponse toResponse(Post post) {
-        return new PostResponse(
-                post.getId(),
-                post.getUser().getId(),
-                post.getUser().getUsername(),
-                post.getTitle(),
-                post.getContent());
     }
 
 }
