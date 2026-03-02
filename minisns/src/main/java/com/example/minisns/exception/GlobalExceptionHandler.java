@@ -20,4 +20,16 @@ public class GlobalExceptionHandler {
     public String handleDuplicate(DuplicateUsernameException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleUserNotFound(UserNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleCommentNotFound(CommentNotFoundException e) {
+        return e.getMessage();
+    }
 }

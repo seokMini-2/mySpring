@@ -73,3 +73,18 @@ Content-Type: application/json
   "title": "바보입니다",
   "content": "제 이름은 코난, 명탐정이죠"
 }
+
+### 댓글 생성
+POST localhost:8080/comments
+Content-Type: application/json
+
+{"postId": 4,
+"userId": 3,
+  "content": "꾸에에엑"
+}
+
+### 게시글 4번의 댓글 조회
+GET localhost:8080/comments/posts/4
+
+### 댓글 삭제
+DELETE localhost:8080/comments/3

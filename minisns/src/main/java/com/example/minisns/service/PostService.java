@@ -4,6 +4,7 @@ import com.example.minisns.domain.Post;
 import com.example.minisns.domain.User;
 import com.example.minisns.dto.PostResponse;
 import com.example.minisns.exception.PostNotFoundException;
+import com.example.minisns.exception.UserNotFoundException;
 import com.example.minisns.repository.PostRepository;
 import com.example.minisns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class PostService {
     // 서비스에서는 레퍼지토리 핸들링.
     public PostResponse create(Long userId, String title, String content) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저 없음"));
+                .orElseThrow(() -> new UserNotFoundException(userId));
         Post post = new Post(title, content, user);
         Post newPost = postRepository.save(post);
         return PostResponse.toResponse(newPost);
-
     }
+
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
         return PostResponse.toResponse(findById(id));

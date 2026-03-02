@@ -1,7 +1,9 @@
 package com.example.minisns.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
 @Table(name = "users") // 테이블 이름 설정하기
 public class User {
@@ -17,13 +19,5 @@ public class User {
 
     public User(String username) {
         this.username = username;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
     }
 }

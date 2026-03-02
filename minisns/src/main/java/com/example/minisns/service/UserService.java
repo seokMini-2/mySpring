@@ -31,13 +31,12 @@ public class UserService {
     public List<UserResponse> getUsers() {
         return findAll()
                 .stream()
-                .map(user -> UserResponse.toUserResponse(user))
+                .map(UserResponse::toUserResponse)
                 .toList();
     }
 
     private List<User> findAll() {
         return userRepository.findAll();
     }
-
 
 }

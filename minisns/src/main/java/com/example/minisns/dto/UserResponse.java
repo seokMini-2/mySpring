@@ -8,5 +8,4 @@ public record UserResponse(Long id, String username) {
                 user.getId(),
                 user.getUsername());
     }
-
 }
