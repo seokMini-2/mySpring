@@ -3,6 +3,8 @@ package com.example.minisns.controller;
 import com.example.minisns.dto.*;
 import com.example.minisns.service.CommentService;
 import com.example.minisns.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +33,8 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostResponse> getPosts() {
-        return postService.getPosts();
+    public Page<PostResponse> getPosts(Pageable pageable) {
+        return postService.getPosts(pageable);
     }
 
     @GetMapping("/{id}")
@@ -41,8 +43,8 @@ public class PostController {
     }
 
     @GetMapping("/{postId}/comments")
-    public List<CommentResponse> getComments(@PathVariable("postId") Long postId) {
-        return commentService.getCommentsByPost(postId);
+    public Page<CommentResponse> getComments(@PathVariable("postId") Long postId, Pageable pageable) {
+        return commentService.getCommentsByPost(postId, pageable);
     }
 
     @PutMapping("/{id}")

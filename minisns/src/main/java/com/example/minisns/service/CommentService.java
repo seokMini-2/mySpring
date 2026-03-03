@@ -10,6 +10,8 @@ import com.example.minisns.exception.UserNotFoundException;
 import com.example.minisns.repository.CommentRepository;
 import com.example.minisns.repository.PostRepository;
 import com.example.minisns.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,28 +31,39 @@ public class CommentService {
     }
 
     public CommentResponse create(Long postId, Long userId, String content) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
+        Post post = findByPostId(postId);
+        User user = findByUserId(userId);
         Comment comment = new Comment(post, user, content);
         return CommentResponse.toResponse(commentRepository.save(comment));
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponse> getCommentsByPost(Long postId) {
-        postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
-        return commentRepository.findByPostId(postId)
-                .stream()
-                .map(CommentResponse::toResponse)
-                .toList();
+    public Page<CommentResponse> getCommentsByPost(Long postId, Pageable pageable) {
+        if (!postRepository.existsById(postId)) {
+            throw new PostNotFoundException(postId);
+        }
+        return commentRepository.findByPostId(postId, pageable)
+                .map(CommentResponse::toResponse);
     }
 
     public void delete(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new CommentNotFoundException(id));
+        Comment comment = findByCommentId(id);
         commentRepository.delete(comment);
+    }
+
+    private Post findByPostId(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
+    }
+
+    private User findByUserId(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    private Comment findByCommentId(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFoundException(id));
     }
 
 }
