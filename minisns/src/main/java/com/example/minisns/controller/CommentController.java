@@ -1,8 +1,5 @@
 package com.example.minisns.controller;
 
-import com.example.minisns.dto.CommentResponse;
-import com.example.minisns.dto.CreateCommentRequest;
-import com.example.minisns.repository.CommentRepository;
 import com.example.minisns.service.CommentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +14,7 @@ public class CommentController {
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
-
+/*
     @PostMapping
     public CommentResponse create(@RequestBody CreateCommentRequest request) {
         return commentService.create(request.postId(), request.userId(), request.content());
@@ -27,6 +24,8 @@ public class CommentController {
     public List<CommentResponse> getCommentsById(@PathVariable("postId") Long postId) {
         return commentService.getCommentsByPost(postId);
     }
+    게시글에 달려있는 댓글을 조회하는기능이니까 PostController에 존재하면 된다;;
+ */
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
