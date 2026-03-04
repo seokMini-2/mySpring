@@ -15,7 +15,7 @@ public class Post {
 
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")//게시글을 작성한 유저의 아이디(외래키)
     private User user;
 
