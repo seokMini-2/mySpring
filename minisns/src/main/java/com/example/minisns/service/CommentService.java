@@ -42,8 +42,7 @@ public class CommentService {
         if (!postRepository.existsById(postId)) {
             throw new PostNotFoundException(postId);
         }
-        return commentRepository.findByPostId(postId, pageable)
-                .map(CommentResponse::toResponse);
+        return commentRepository.findResponsesByPostId(postId, pageable); // Page<Comment>반환
     }
 
     public void delete(Long id) {

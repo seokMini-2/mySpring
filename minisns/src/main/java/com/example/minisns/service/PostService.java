@@ -38,8 +38,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostResponse> getPosts(Pageable pageable) {
-        return findAll(pageable)
-                .map(PostResponse::toResponse);
+        return postRepository.findPostResponses(pageable);
     }
 
     public PostResponse update(Long id, String title, String content) {
