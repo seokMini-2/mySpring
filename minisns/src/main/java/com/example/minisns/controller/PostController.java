@@ -3,20 +3,17 @@ package com.example.minisns.controller;
 import com.example.minisns.dto.*;
 import com.example.minisns.service.CommentService;
 import com.example.minisns.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-@RestController()
+@RestController
 @RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
-
-    public PostController(PostService postService, CommentService commentService) {
-        this.postService = postService;
-        this.commentService = commentService;
-    }
 
     @PostMapping
     public PostResponse create(@RequestBody CreatePostRequest request) {
@@ -44,14 +41,17 @@ public class PostController {
         return PageResponse.from(commentService.getCommentsByPost(postId, pageable));
     }
 
+    //아이디 검증을 위해
     @PutMapping("/{id}")
     public PostResponse updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
-        return postService.update(id, request.title(), request.content());
+        return postService.update(request.userId(), id, request.title(), request.content());
     }
 
+    //아이디 검증을 위해
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable("id") Long id) {
-        postService.delete(id);
+    public void deletePost(@PathVariable("id") Long id,
+                           @RequestParam("userId") Long userId) {
+        postService.delete(userId, id);
     }
 
 }

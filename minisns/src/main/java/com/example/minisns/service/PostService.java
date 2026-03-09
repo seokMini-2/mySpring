@@ -13,27 +13,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    // 서비스에서는 레퍼지토리 핸들링.
     public PostResponse create(Long userId, String title, String content) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        Post post = new Post(title, content, user);
-        Post newPost = postRepository.save(post);
-        return PostResponse.toResponse(newPost);
+        User user = findUserById(userId);
+        Post post = Post.create(title, content, user);
+        Post savedPost = postRepository.save(post);
+        return PostResponse.toResponse(savedPost);
     }
 
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id) {
-        return PostResponse.toResponse(findById(id));
+        return PostResponse.toResponse(findPostById(id));
     }
 
     @Transactional(readOnly = true)
@@ -41,26 +38,34 @@ public class PostService {
         return postRepository.findPostResponses(pageable);
     }
 
-    public PostResponse update(Long id, String title, String content) {
-        Post post = findById(id);
-        post.update(title, content);
+    public PostResponse update(Long loginUserId, Long postId, String title, String content) {
+        Post post = findPostById(postId);
+        validatePostOwner(loginUserId, post);
+        post.update(title, content); // Dirty Checking(save 하지않아도 반영됨)
         return PostResponse.toResponse(post);
     }
 
-    public void delete(Long id) {
-        Post post = findById(id);
+    public void delete(Long loginUserId, Long postId) {
+        Post post = findPostById(postId);
+        validatePostOwner(loginUserId, post);
         postRepository.delete(post);
     }
 
     // =============== PRIVATE METHOD =================
 
-    private Page<Post> findAll(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    private Post findById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id));
+    private Post findPostById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
     }
 
+    private void validatePostOwner(Long loginUserId, Post post) {
+        if (!post.isOwner(loginUserId)) {
+            throw new IllegalArgumentException("게시글 작성자만 수정/삭제할 수 있습니다.");
+        }
+    }
 }

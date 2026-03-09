@@ -7,6 +7,7 @@ import lombok.Getter;
 @Entity
 @Table(name = "comment")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,9 +25,18 @@ public class Comment {
 
     protected Comment() {}
 
-    public Comment(Post post, User user, String content) {
+    private Comment(Post post, User user, String content) {
         this.post = post;
         this.user = user;
         this.content = content;
+    }
+
+    public static Comment create(Post post, User user, String content) {
+        return new Comment(post, user, content);
+    }
+
+    //이 댓글을 댓글 작성자가 쓴건지 확인하기 위해
+    public boolean isOwner(Long userId) {
+        return this.user.getId().equals(userId);
     }
 }
