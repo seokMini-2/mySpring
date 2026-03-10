@@ -3,6 +3,7 @@ package com.example.minisns.post.service;
 import com.example.minisns.global.exception.PostNotFoundException;
 import com.example.minisns.global.exception.UserNotFoundException;
 import com.example.minisns.post.domain.Post;
+import com.example.minisns.post.domain.PostType;
 import com.example.minisns.post.dto.PostResponse;
 import com.example.minisns.post.repository.PostRepository;
 import com.example.minisns.user.domain.User;
@@ -21,9 +22,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    public PostResponse create(Long userId, String title, String content) {
+    public PostResponse create(Long userId, String title, String content, PostType postType) {
         User user = findUserById(userId);
-        Post post = Post.create(title, content, user);
+        Post post = Post.create(title, content, postType, user);
         Post savedPost = postRepository.save(post);
         return PostResponse.toResponse(savedPost);
     }
@@ -38,10 +39,10 @@ public class PostService {
         return postRepository.findPostResponses(pageable);
     }
 
-    public PostResponse update(Long loginUserId, Long postId, String title, String content) {
+    public PostResponse update(Long loginUserId, Long postId, String title, String content, PostType postType) {
         Post post = findPostById(postId);
         validatePostOwner(loginUserId, post);
-        post.update(title, content); // Dirty Checking(save 하지않아도 반영됨)
+        post.update(title, content, postType); // Dirty Checking(save 하지않아도 반영됨)
         return PostResponse.toResponse(post);
     }
 

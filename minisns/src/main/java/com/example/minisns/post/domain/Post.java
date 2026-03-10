@@ -18,26 +18,33 @@ public class Post {
     @Column(nullable = false, length = 1000)
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private PostType postType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
     protected Post() {}
 
-    private Post(String title, String content, User user) {
+    private Post(String title, String content, PostType postType, User user) {
         this.title = title;
         this.content = content;
+        this.postType = postType;
         this.user = user;
     }
 
     //Post 생성 Post에서 직접 관리
-    public static Post create(String title, String content, User user) {
-        return new Post(title, content, user);
+    public static Post create(String title, String content, PostType postType, User user) {
+        return new Post(title, content, postType, user);
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, PostType postType) {
         this.title = title;
         this.content = content;
+        this.postType = postType;
     }
 
     //추후 진짜 작성자인지 확인하기 위해서

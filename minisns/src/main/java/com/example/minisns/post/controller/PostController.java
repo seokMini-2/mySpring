@@ -22,7 +22,11 @@ public class PostController {
 
     @PostMapping
     public PostResponse create(@RequestBody CreatePostRequest request) {
-        return postService.create(request.userId(), request.title(), request.content());
+        return postService.create(
+                request.userId(),
+                request.title(),
+                request.content(),
+                request.postType());
     }
 
     @PostMapping("/{postId}/comments")
@@ -49,7 +53,12 @@ public class PostController {
     //아이디 검증을 위해
     @PutMapping("/{id}")
     public PostResponse updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
-        return postService.update(request.userId(), id, request.title(), request.content());
+        return postService.update(
+                request.userId(),
+                id,
+                request.title(),
+                request.content(),
+                request.postType());
     }
 
     //아이디 검증을 위해

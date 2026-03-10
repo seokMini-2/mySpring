@@ -15,7 +15,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             u.id,
             u.username,
             p.title,
-            p.content
+            p.content,
+            p.postType
             )
             from Post p
             join p.user u""")
