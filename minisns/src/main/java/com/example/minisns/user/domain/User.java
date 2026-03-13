@@ -15,9 +15,18 @@ public class User {
     @Column(nullable = false, unique = true) // 컬럼 규칙 설정
     private String username;
 
-    protected User() {}
+    @Column(nullable = false)
+    private String password;
 
-    public User(String username) {
+    protected User() {
+    }
+
+    private User(String username, String password) {
         this.username = username;
+        this.password = password;
+    }
+
+    public static User create(String username, String password) {
+        return new User(username, password);
     }
 }

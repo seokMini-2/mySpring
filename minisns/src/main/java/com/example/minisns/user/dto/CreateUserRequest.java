@@ -1,4 +1,6 @@
 package com.example.minisns.user.dto;
 
-public record CreateUserRequest(String username) {
+public record CreateUserRequest(
+        String username,
+        String password) {
 }
