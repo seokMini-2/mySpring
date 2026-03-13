@@ -3,6 +3,7 @@ package com.example.minisns.user.controller;
 import com.example.minisns.user.dto.CreateUserRequest;
 import com.example.minisns.user.dto.UserResponse;
 import com.example.minisns.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserResponse createUser(@RequestBody CreateUserRequest request) {
+    public UserResponse createUser(@Valid @RequestBody CreateUserRequest request) {
         return userService.create(request.username());
     }
 

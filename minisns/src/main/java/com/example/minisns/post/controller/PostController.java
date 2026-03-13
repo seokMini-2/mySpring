@@ -8,6 +8,7 @@ import com.example.minisns.post.dto.CreatePostRequest;
 import com.example.minisns.post.dto.PostResponse;
 import com.example.minisns.post.dto.UpdatePostRequest;
 import com.example.minisns.post.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PostController {
     private final CommentService commentService;
 
     @PostMapping
-    public PostResponse create(@RequestBody CreatePostRequest request) {
+    public PostResponse create(@Valid @RequestBody CreatePostRequest request) {
         return postService.create(
                 request.userId(),
                 request.title(),
@@ -31,7 +32,7 @@ public class PostController {
 
     @PostMapping("/{postId}/comments")
     public CommentResponse createComment(@PathVariable("postId") Long postId,
-                                         @RequestBody CreateCommentRequest request) {
+                                         @Valid @RequestBody CreateCommentRequest request) {
         return commentService.create(postId, request.userId(), request.content());
     }
 
@@ -52,7 +53,7 @@ public class PostController {
 
     //아이디 검증을 위해
     @PutMapping("/{id}")
-    public PostResponse updatePost(@PathVariable("id") Long id, @RequestBody UpdatePostRequest request) {
+    public PostResponse updatePost(@PathVariable("id") Long id, @Valid @RequestBody UpdatePostRequest request) {
         return postService.update(
                 request.userId(),
                 id,
