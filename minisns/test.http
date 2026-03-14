@@ -1,3 +1,11 @@
+### 사용자 생성
+POST localhost:8080/users
+Content-Type: application/json
+
+{
+  "username": "해커"
+}
+
 ### 사용자 조회
 GET localhost:8080/users
 
@@ -30,8 +38,11 @@ Content-Type: application/json
   "content": "온걸 환영하네"
 }
 
+### 댓글 조회
+GET localhost:8080/posts/1/comments
+
 ### 게시글 조회 페이지네이션
-GET localhost:8080/posts/1?page=0&size=10&sort=id,desc
+GET localhost:8080/posts?page=0&size=10&sort=id,desc
 
 ### 1번 게시물 수정하기
 PUT localhost:8080/posts/1
@@ -57,3 +68,14 @@ Content-Type: application/json
 
 ### 해커가 댓글 삭제 시도
 DELETE localhost:8080/comments/1?userId=999
+
+### 제목 수정 NotBlank 테스트
+PUT localhost:8080/posts/1
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "",
+  "content": "이걸 막아?",
+  "postType": "QUESTION"
+}
