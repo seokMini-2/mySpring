@@ -1,5 +1,6 @@
 package com.example.minisns.user.service;
 
+import com.example.minisns.global.exception.UserNotFoundException;
 import com.example.minisns.user.domain.User;
 import com.example.minisns.user.repository.UserRepository;
 import com.example.minisns.user.dto.UserResponse;
@@ -23,19 +24,30 @@ public class UserService {
         }
 
         User savedUser = userRepository.save(User.create(username));
-        return UserResponse.toUserResponse(savedUser);
+        return UserResponse.from(savedUser);
     }
 
     @Transactional(readOnly = true)
     public List<UserResponse> getUsers() {
         return findAll()
                 .stream()
-                .map(UserResponse::toUserResponse)
+                .map(UserResponse::from)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse getUserById(Long userId) {
+        User user = findUserById(userId);
+        return UserResponse.from(user);
     }
 
     private List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
 }
